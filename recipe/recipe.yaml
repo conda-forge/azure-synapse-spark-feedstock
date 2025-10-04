@@ -1,8 +1,9 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
 schema_version: 1
 
 context:
   name: azure-synapse-spark
-  version: 0.7.0
+  version: "0.7.0"
 
 package:
   name: ${{ name|lower }}
@@ -23,7 +24,7 @@ requirements:
     - pip
     - setuptools
   run:
-    - python >=${{ python_min }}
+    - python >=${{ python_min }},<4.0
     - msrest >=0.5.0
     - azure-common >=1.1,<2.dev0
     - azure-core >=1.6.0,<2.0.0
@@ -35,12 +36,7 @@ tests:
         - azure.synapse.spark
         - azure.synapse.spark.aio
       python_version: ${{ python_min }}.*
-  - requirements:
-      run:
-        - pip
-        - python ${{ python_min }}.*
-    script:
-      - pip check
+      pip_check: true
 
 about:
   summary: Microsoft Azure Synapse Spark Client Library for Python
