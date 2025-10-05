@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/prefix-dev/recipe-format/main/schema.json
+schema_version: 1
+
+context:
+  name: azure-synapse-spark
+  version: "0.7.0"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/azure-synapse-spark-${{ version }}.zip
+  sha256: 86fa29463a24b7c37025ff21509b70e36b4dace28e5d92001bc920488350acd5
+
+build:
+  number: 2
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - python ${{ python_min }}.*
+    - pip
+    - setuptools
+  run:
+    - python >=${{ python_min }},<4.0
+    - msrest >=0.5.0
+    - azure-common >=1.1,<2.dev0
+    - azure-core >=1.6.0,<2.0.0
+    - azure-synapse-nspkg
+
+tests:
+  - python:
+      imports:
+        - azure.synapse.spark
+        - azure.synapse.spark.aio
+      python_version: ${{ python_min }}.*
+      pip_check: true
+
+about:
+  summary: Microsoft Azure Synapse Spark Client Library for Python
+  license: MIT
+  license_file: LICENSE
+  homepage: https://github.com/Azure/azure-sdk-for-python
+
+extra:
+  recipe-maintainers:
+    - rxm7706
